@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Estoque - Histórico</title>
+    <link rel="stylesheet" href="estoque.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <aside class="sidebar-index">
+        <h2>SISTEMA</h2>
+        <nav>
+            <a href="gestao.html">Produtos</a>
+            <a href="#" class="active">Movimentações</a>
+        </nav>
+        <a href="../index.html" class="sair">Sair</a>
+    </aside>
+
+    <main class="painel-index">
+        <header class="topo-index">
+            Administração / <strong>Estoque</strong>
+        </header>
+
+        <!-- Alertas de estoque crítico (preenchido via JS) -->
+        <div id="alertas-container"></div>
+
+        <!-- ── Saldo e Histórico ── -->
+        <section class="card-tabela" id="secao-lista">
+            <div class="header-flex">
+                <h3>Saldo Atual</h3>
+                <button class="btn btn-primary" onclick="alternarTela()">+ Movimentação</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Qtd</th>
+                        <th>Mín.</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-saldo">
+                    <tr><td colspan="4" style="text-align:center;padding:20px;color:#9ca3af;">Carregando...</td></tr>
+                </tbody>
+            </table>
+
+            <div class="header-flex" style="margin-top: 40px; border-top: 1px solid #f0f0f0; padding-top: 25px;">
+                <h3>Histórico</h3>
+            </div>
+
+            <table class="tabela-historico">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Produto</th>
+                        <th>Operação</th>
+                        <th>Qtd</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-historico">
+                    <tr><td colspan="4" style="text-align:center;padding:20px;color:#9ca3af;">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ── Formulário de Movimentação ── -->
+        <section class="card-tabela hidden" id="secao-form">
+            <div class="header-flex">
+                <h3>Registrar Movimentação</h3>
+            </div>
+
+            <form onsubmit="registrarMovimentacao(event)">
+                <div class="grid-form">
+                    <div class="campo">
+                        <label>Produto</label>
+                        <select id="mov-produto" required>
+                            <option value="">Selecione...</option>
+                            <!-- Preenchido via JS -->
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label>Tipo</label>
+                        <select id="mov-tipo" required>
+                            <option value="E">⬆ Entrada</option>
+                            <option value="S">⬇ Saída</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label>Quantidade</label>
+                        <input type="number" id="mov-qtd" placeholder="0" min="1" required>
+                    </div>
+                </div>
+                <div class="botoes-form">
+                    <button type="button" class="btn btn-outline" onclick="alternarTela()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Movimentação</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const API = 'http://localhost:3000';
+
+        // ─── Carrega saldo atual dos produtos ───────────────────────
+        async function carregarProdutos() {
+            try {
+                const res = await fetch(`${API}/produtos`);
+                const produtos = await res.json();
+
+                // Preenche a tabela de saldo
+                const tabelaSaldo = document.getElementById('tabela-saldo');
+                tabelaSaldo.innerHTML = '';
+
+                // Preenche o select do formulário
+                const select = document.getElementById('mov-produto');
+                select.innerHTML = '<option value="">Selecione...</option>';
+
+                // Alertas de estoque crítico
+                const alertasContainer = document.getElementById('alertas-container');
+                alertasContainer.innerHTML = '';
+
+                if (produtos.length === 0) {
+                    tabelaSaldo.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#9ca3af;">Nenhum produto cadastrado.</td></tr>';
+                    return;
+                }
+
+                produtos.forEach(p => {
+                    const critico = p.quantidade < p.estoque_minimo;
+
+                    // Linha de saldo
+                    tabelaSaldo.innerHTML += `
+                        <tr>
+                            <td>${p.nome}</td>
+                            <td>${p.quantidade}</td>
+                            <td>${p.estoque_minimo}</td>
+                            <td>
+                                <span class="badge ${critico ? 'alerta' : 'ok'}">
+                                    ${critico ? 'Repor' : 'Estável'}
+                                </span>
+                            </td>
+                        </tr>`;
+
+                    // Alerta de crítico
+                    if (critico) {
+                        alertasContainer.innerHTML += `
+                            <div class="alerta-clean">
+                                ⚠️ ${p.nome}: Estoque crítico (${p.quantidade}/${p.estoque_minimo})
+                            </div>`;
+                    }
+
+                    // Opção no select
+                    select.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+                });
+
+            } catch (error) {
+                console.error('Erro ao carregar produtos:', error);
+                document.getElementById('tabela-saldo').innerHTML =
+                    '<tr><td colspan="4" style="color:#ef4444;text-align:center;padding:20px;">Erro ao conectar com o servidor.</td></tr>';
+            }
+        }
+
+        // ─── Carrega histórico de movimentações ────────────────────
+        async function carregarHistorico() {
+            try {
+                const res = await fetch(`${API}/movimentacoes`);
+                const movs = await res.json();
+
+                const tabela = document.getElementById('tabela-historico');
+                tabela.innerHTML = '';
+
+                if (movs.length === 0) {
+                    tabela.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#9ca3af;">Nenhuma movimentação registrada.</td></tr>';
+                    return;
+                }
+
+                movs.forEach(m => {
+                    const isEntrada = m.tipo === 'E';
+                    tabela.innerHTML += `
+                        <tr>
+                            <td>${m.data}</td>
+                            <td>${m.produto}</td>
+                            <td>
+                                <span class="${isEntrada ? 'txt-entrada' : 'txt-saida'}">
+                                    ${isEntrada ? '⬆ Entrada' : '⬇ Saída'}
+                                </span>
+                            </td>
+                            <td>${m.quantidade}</td>
+                        </tr>`;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar histórico:', error);
+            }
+        }
+
+        // ─── Registra movimentação ──────────────────────────────────
+        async function registrarMovimentacao(event) {
+            event.preventDefault();
+
+            const id_produto = document.getElementById('mov-produto').value;
+            const tipo       = document.getElementById('mov-tipo').value;
+            const quantidade = parseInt(document.getElementById('mov-qtd').value);
+
+            if (!id_produto || !tipo || !quantidade) {
+                mostrarNotificacao('Preencha todos os campos.', 'erro');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API}/movimentacoes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_produto, tipo, quantidade })
+                });
+
+                const dados = await res.json();
+                if (!res.ok) throw new Error(dados.erro || 'Erro ao registrar');
+
+                mostrarNotificacao('Movimentação registrada com sucesso!');
+                document.getElementById('mov-qtd').value = '';
+                alternarTela();
+
+                // Recarrega tudo
+                carregarProdutos();
+                carregarHistorico();
+
+            } catch (error) {
+                console.error('Erro ao registrar movimentação:', error);
+                mostrarNotificacao('Erro: ' + error.message, 'erro');
+            }
+        }
+
+        // ─── Alterna entre lista e formulário ───────────────────────
+        function alternarTela() {
+            document.getElementById('secao-lista').classList.toggle('hidden');
+            document.getElementById('secao-form').classList.toggle('hidden');
+        }
+
+        // ─── Toast de notificação ───────────────────────────────────
+        function mostrarNotificacao(mensagem, tipo = 'sucesso') {
+            const anterior = document.getElementById('notificacao-toast');
+            if (anterior) anterior.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'notificacao-toast';
+            toast.innerText = mensagem;
+            toast.style.cssText = `
+                position: fixed; bottom: 30px; right: 30px;
+                background: ${tipo === 'erro' ? '#ef4444' : '#22c55e'};
+                color: white; padding: 14px 22px; border-radius: 10px;
+                font-weight: 500; font-size: 14px; z-index: 9999;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        // ─── Inicialização ──────────────────────────────────────────
+        window.onload = () => {
+            carregarProdutos();
+            carregarHistorico();
+        };
+    </script>
+</body>
+</html>

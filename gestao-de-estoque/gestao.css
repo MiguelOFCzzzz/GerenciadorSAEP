@@ -1,0 +1,261 @@
+/* Configurações Globais - Estética Clean */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif; /* Fonte moderna e limpa */
+}
+
+body {
+    display: flex;
+    background-color: #f9fafb; /* Cinza claríssimo para contraste suave */
+    color: #1f2937;
+    min-height: 100vh;
+}
+
+/* Sidebar Minimalista */
+.sidebar-index {
+    width: 220px;
+    background-color: #111827; /* Dark mode suave */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar-index h2 {
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 40px;
+}
+
+.sidebar-index a {
+    color: #9ca3af;
+    text-decoration: none;
+    padding: 12px;
+    display: block;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    transition: 0.2s ease;
+}
+
+.sidebar-index a:hover, 
+.sidebar-index a.active {
+    background-color: #1f2937;
+    color: #fff;
+}
+
+.sair {
+    margin-top: auto;
+    color: #ef4444 !important;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+/* Área de Conteúdo Principal */
+.painel-index {
+    flex: 1;
+    margin-left: 220px; /* Alinhado com a largura da sidebar */
+}
+
+.topo-index {
+    background: white;
+    padding: 20px 40px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.topo-index strong {
+    color: #111827;
+}
+
+/* Layout e Containers */
+.container-tabela {
+    padding: 40px;
+}
+
+.header-secao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* Inputs e Botões Clean */
+.acoes-tabela input {
+    padding: 10px 15px;
+    width: 280px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.acoes-tabela input:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.05);
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+    border: none;
+}
+
+.btn-novo, .btn-salvar {
+    background: #111827; /* Mantendo o padrão dark clean */
+    color: white;
+}
+
+.btn-novo:hover, .btn-salvar:hover {
+    background: #374151;
+}
+
+.btn-cancelar {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+}
+
+.btn-cancelar:hover {
+    background: #f3f4f6;
+}
+
+/* Tabela Estilo Card */
+.card-tabela {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+td {
+    padding: 16px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #f9fafb;
+    color: #374151;
+}
+
+/* Botões de Ação na Tabela */
+.btn-e, .btn-d {
+    padding: 6px;
+    border-radius: 6px;
+    margin-right: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-e { background: #fef3c7; color: #92400e; } /* Editar - Amarelo Soft */
+.btn-d { background: #fee2e2; color: #b91c1c; } /* Excluir - Vermelho Soft */
+
+/* Badges de Status (Usadas no estoque.html) */
+.badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.ok { background: #dcfce7; color: #15803d; }
+.alerta { background: #fee2e2; color: #b91c1c; }
+
+/* Formulário Card Centralizado */
+.container-form {
+    padding: 60px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.card-form {
+    background: white;
+    padding: 35px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 480px;
+}
+
+.card-form h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #111827;
+}
+
+.campo {
+    margin-bottom: 20px;
+}
+
+.campo label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #4b5563;
+}
+
+.campo input, .campo select, .campo textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.campo input:focus {
+    border-color: #111827;
+    outline: none;
+}
+
+.botoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+/* Utilitários */
+.hidden { display: none; }
+.alerta-clean {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    border: 1px solid #fecaca;
+    margin-bottom: 25px;
+}

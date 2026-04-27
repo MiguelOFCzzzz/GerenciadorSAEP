@@ -1,0 +1,55 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { display: flex; background: #f9fafb; color: #1f2937; }
+
+/* Sidebar */
+.sidebar-index { width: 220px; background: #111827; color: #fff; padding: 30px 20px; position: fixed; height: 100vh; display: flex; flex-direction: column; }
+.sidebar-index h2 { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 30px; }
+.sidebar-index nav a { color: #9ca3af; text-decoration: none; padding: 10px; display: block; border-radius: 6px; font-size: 14px; margin-bottom: 5px; }
+.sidebar-index nav a.active { background: #1f2937; color: #fff; }
+.sair { margin-top: auto; color: #ef4444 !important; font-size: 13px; text-decoration: none; }
+
+/* Main */
+.painel-index { flex: 1; margin-left: 220px; padding: 40px; }
+.topo-index { font-size: 13px; color: #6b7280; margin-bottom: 25px; }
+.topo-index strong { color: #111827; }
+
+/* Alerta Compacto */
+.alerta-clean { background: #fee2e2; color: #b91c1c; padding: 12px 16px; border-radius: 8px; font-size: 13px; border: 1px solid #fecaca; margin-bottom: 25px; }
+
+/* Cards */
+.card-tabela { background: #fff; border-radius: 12px; border: 1px solid #e5e7eb; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.header-flex h3 { font-size: 16px; font-weight: 600; }
+
+/* Tabelas Minimalistas */
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 11px; color: #6b7280; text-transform: uppercase; padding-bottom: 12px; border-bottom: 1px solid #f3f4f6; }
+td { padding: 14px 0; font-size: 14px; border-bottom: 1px solid #f9fafb; }
+
+/* Botões */
+.btn { border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s; }
+.btn-primary { background: #111827; color: #fff; }
+.btn-primary:hover { background: #374151; }
+.btn-outline { background: transparent; border: 1px solid #d1d5db; color: #4b5563; }
+
+/* Badges */
+.badge { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.ok { background: #dcfce7; color: #15803d; }
+.alerta { background: #fee2e2; color: #b91c1c; }
+
+/* Utilitários */
+.hidden { display: none; }
+.grid-form { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 20px; }
+.campo label { display: block; font-size: 12px; margin-bottom: 5px; color: #6b7280; }
+.campo input, .campo select { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; }
+.botoes-form { margin-top: 25px; display: flex; gap: 10px; justify-content: flex-end; }
+
+/* Cores para o histórico */
+.txt-entrada { color: #15803d; font-weight: 500; font-size: 13px; }
+.txt-saida { color: #b91c1c; font-weight: 500; font-size: 13px; }
+
+/* Espaçamento extra para a tabela de histórico */
+.tabela-historico td {
+    color: #4b5563;
+    font-size: 13px;
+}

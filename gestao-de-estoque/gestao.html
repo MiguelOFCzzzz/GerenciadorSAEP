@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Estoque</title>
+    <link rel="stylesheet" href="gestao.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <aside class="sidebar-index">
+        <h2>SISTEMA</h2>
+        <nav>
+            <a href="#" class="active" onclick="mostrarTela('secao-tabela')">Produtos</a>
+            <a href="estoque.html">Movimentações</a>
+        </nav>
+        <a href="../index.html" class="sair">Encerrar Sessão</a>
+    </aside>
+
+    <main class="painel-index">
+        <header class="topo-index">
+            Administração > <strong id="subtitulo">Inventário</strong>
+        </header>
+
+        <!-- ── Tabela de Produtos ── -->
+        <section class="container-tabela" id="secao-tabela">
+            <div class="card-tabela">
+                <div class="header-flex" style="margin-bottom: 25px;">
+                    <div class="acoes-tabela">
+                        <input type="text" placeholder="Buscar produto..."
+                               style="padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; width: 300px;">
+                    </div>
+                    <button class="btn btn-primary" onclick="abrirCadastro()">+ Novo Produto</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produto</th>
+                            <th>Qtd</th>
+                            <th style="text-align: right;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido dinamicamente pelo app.js -->
+                        <tr>
+                            <td colspan="4" style="text-align:center; color:#9ca3af; padding:30px;">
+                                Carregando produtos...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── Formulário de Cadastro/Edição ── -->
+        <section class="container-form hidden" id="secao-formulario">
+            <div class="card-form">
+                <h3 id="titulo-form">Novo Produto</h3>
+
+                <!-- IMPORTANTE: onsubmit chama salvarProduto, sem action PHP -->
+                <form id="form-produto" onsubmit="salvarProduto(event)">
+                    <input type="hidden" id="form-id">
+
+                    <div class="campo">
+                        <label>Nome do Produto</label>
+                        <input type="text" id="form-nome" placeholder="Ex: Caderno Universitário" required>
+                    </div>
+
+                    <div class="campo">
+                        <label>Quantidade Inicial</label>
+                        <input type="number" id="form-qtd" placeholder="0" min="0" required>
+                    </div>
+
+                    <div class="campo">
+                        <label>Estoque Mínimo</label>
+                        <input type="number" id="form-minimo" placeholder="5" min="0" value="5">
+                    </div>
+
+                    <div class="botoes">
+                        <button type="button" class="btn btn-cancelar"
+                                onclick="mostrarTela('secao-tabela')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Produto</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- app.js deve vir ao final do body, após o HTML estar carregado -->
+    <script src="app.js"></script>
+
+</body>
+</html>
